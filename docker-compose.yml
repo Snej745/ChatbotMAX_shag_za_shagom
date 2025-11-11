@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  maxbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: max-dependency-bot
+    restart: unless-stopped
+    
+    # Переменные окружения из .env файла
+    env_file:
+      - .env
+    
+    # Можно также указать переменные напрямую (перезаписывают .env)
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=INFO
+    
+    # Монтируем volume для логов
+    volumes:
+      - ./logs:/app/logs
+      - ./bot.log:/app/bot.log
+    
+    # Ограничения ресурсов
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Логирование
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Сеть
+    networks:
+      - maxbot-network
+
+networks:
+  maxbot-network:
+    driver: bridge

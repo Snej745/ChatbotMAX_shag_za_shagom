@@ -1,0 +1,75 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs
+*.log
+bot.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Documentation
+*.md
+!README.md
+CHANGELOG.md
+MIGRATION_GUIDE.md
+NAVIGATION_MAP.md
+SCHEMA_ANALYSIS.md
+STRUCTURE_VERIFICATION.md
+UPDATE_SUMMARY.md
+TESTING_RESULTS.md
+PROJECT_DOCUMENTATION.md
+QUICKSTART.md
+LIBRARIES.md
+DOCUMENTATION_INDEX.md
+
+# Testing
+test_*.py
+*_test.py
+diagnose_updates.py
+monitor_updates.py
+wait_for_callback.py
+
+# Environment
+.env.example
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Other
+*.bat
+Зависимости.txt
