@@ -194,6 +194,7 @@ class MaxBotApplication:
             'continue_after_info': self.bot_handlers.handle_continue_after_info,
             'continue_after_literature': self.bot_handlers.handle_continue_after_literature,
             'restart_conversation': self.bot_handlers.handle_restart_conversation,
+            'cancel_help': self.bot_handlers.handle_cancel_help,
             'back_to_final': self.bot_handlers.handle_back_to_final,
             'back_to_help': self.bot_handlers.handle_back_to_help,
             'back_to_city': self.bot_handlers.back_to_city,

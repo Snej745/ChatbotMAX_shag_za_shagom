@@ -843,7 +843,8 @@ https://ozon.ru/t/LtWbt2m
         """
         
         keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("Продолжить", callback_data="continue_to_discovery")]
+            [InlineKeyboardButton("Продолжить", callback_data="continue_to_discovery")],
+            [InlineKeyboardButton("❌ Мне не нужна помощь", callback_data="cancel_help")]
         ])
         
         await query.edit_message_text(
@@ -1074,7 +1075,8 @@ https://ozon.ru/t/LtWbt2m
         keyboard = InlineKeyboardMarkup([
             [InlineKeyboardButton("❓ Ответы на популярные вопросы", callback_data="final_faq")],
             [InlineKeyboardButton("📅 Расписание вебинаров спикеров", callback_data="final_webinars")],
-            [InlineKeyboardButton("🔄 Вернуться к началу", callback_data="restart_conversation")]
+            [InlineKeyboardButton("🔄 Вернуться к началу", callback_data="restart_conversation")],
+            [InlineKeyboardButton("❌ Мне не нужна помощь", callback_data="cancel_help")]
         ])
         
         await query.edit_message_text(
@@ -1174,6 +1176,35 @@ A: Полноценно справиться с зависимостью пом�
         
         context.user_data['current_state'] = BotStates.DEPENDENCY_SELECTION.value
         logger.info(f"User {format_user_info(query.from_user)} restarted conversation")
+        
+        return BotStates.DEPENDENCY_SELECTION.value
+    
+    async def handle_cancel_help(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        """Handle cancel help button - return to main menu without completing conversation."""
+        query = update.callback_query
+        await query.answer()
+        
+        # Clear user data
+        context.user_data.clear()
+        context.user_data['preferences'] = {}
+        
+        message = """
+👋 Хорошо, возвращаемся в главное меню.
+
+Если вам понадобится помощь - мы всегда здесь для вас.
+
+🤝 Выбор типа зависимости
+
+Укажите, с каким видом зависимости вы столкнулись:
+        """
+        
+        await query.edit_message_text(
+            message,
+            reply_markup=self.conversation_flow.get_dependency_keyboard()
+        )
+        
+        context.user_data['current_state'] = BotStates.DEPENDENCY_SELECTION.value
+        logger.info(f"User {format_user_info(query.from_user)} cancelled help request")
         
         return BotStates.DEPENDENCY_SELECTION.value
     
@@ -1492,7 +1523,8 @@ A: Полноценно справиться с зависимостью пом�
             BotStates.AGE_SPECIALIST_PREFERENCE.value: [
                 CallbackQueryHandler(self.back_to_age_user, pattern='^back_to_age_user'),
                 CallbackQueryHandler(self.handle_age_specialist, pattern='^ages_'),
-                CallbackQueryHandler(self.handle_continue_to_discovery, pattern='^continue_to_discovery')
+                CallbackQueryHandler(self.handle_continue_to_discovery, pattern='^continue_to_discovery'),
+                CallbackQueryHandler(self.handle_cancel_help, pattern='^cancel_help')
             ],
             BotStates.ONLINE_OFFLINE_GROUPS.value: [
                 CallbackQueryHandler(self.handle_continue_to_discovery, pattern='^continue_to_discovery')
@@ -1517,6 +1549,7 @@ A: Полноценно справиться с зависимостью пом�
                 CallbackQueryHandler(self.handle_final_faq, pattern='^final_faq'),
                 CallbackQueryHandler(self.handle_final_webinars, pattern='^final_webinars'),
                 CallbackQueryHandler(self.handle_back_to_final, pattern='^back_to_final'),
-                CallbackQueryHandler(self.handle_restart_conversation, pattern='^restart_conversation')
+                CallbackQueryHandler(self.handle_restart_conversation, pattern='^restart_conversation'),
+                CallbackQueryHandler(self.handle_cancel_help, pattern='^cancel_help')
             ]
         }
