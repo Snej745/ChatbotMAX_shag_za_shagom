@@ -190,15 +190,15 @@ class BotHandlers:
             
             if dependency_data:
                 message = f"""
-📋 **{dependency_data['name']}**
+📋 {dependency_data['name']}
 
-**Симптомы:**
+Симптомы:
 {dependency_data['symptoms']}
 
-**Причины появления:**
+Причины появления:
 {dependency_data['causes']}
 
-**Что делать:**
+Что делать:
 {dependency_data['treatment']}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
