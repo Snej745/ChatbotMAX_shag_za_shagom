@@ -1,4 +1,4 @@
-# Telegram Dependency Counseling Bot - Полная документация
+# MAX Dependency Counseling Bot - Полная документация
 
 ## 📋 Оглавление
 
